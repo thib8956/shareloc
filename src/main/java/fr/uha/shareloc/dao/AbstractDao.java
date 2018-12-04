@@ -30,7 +30,7 @@ public class AbstractDao<T> {
      *
      * @return l'entity manager
      */
-    private EntityManager getEntityManager() {
+    protected EntityManager getEntityManager() {
         if (entityManager == null) {
             entityManager = emf.createEntityManager();
         }

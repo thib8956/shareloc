@@ -46,4 +46,8 @@ public class Colocation implements Serializable {
     public void setAdmin(User admin) {
         this.admin = admin;
     }
+
+    public void addMember(User user) {
+        members.add(user);
+    }
 }
