@@ -40,4 +40,24 @@ public class BaseServices<T> {
                 .entity("Saved : " + resource)
                 .build();
     }
+
+    @DELETE
+    @Path("/{id}")
+    public Response delete(@PathParam("id") String id) {
+        final T obj = dao.find(id);
+        if (obj == null) return Response.status(Response.Status.NOT_FOUND).build();
+        dao.remove(obj);
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    public Response edit(@PathParam("id") String id) {
+        final T obj = dao.find(id);
+        if (obj == null) return Response.status(Response.Status.NOT_FOUND).build();
+        dao.edit(obj);
+        return Response.status(Response.Status.CREATED)
+                .entity("Updated : " + obj)
+                .build();
+    }
 }
