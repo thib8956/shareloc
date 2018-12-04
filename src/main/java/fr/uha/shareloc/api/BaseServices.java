@@ -23,11 +23,13 @@ public class BaseServices<T> {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response get(@PathParam("id") String id) {
+    public Response get(@PathParam("id") Integer id) {
+        final T obj = dao.find(id);
+        if (obj == null) return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok()
-                .entity(dao.find(id))
+                .entity(obj)
                 .build();
     }
 
@@ -42,8 +44,8 @@ public class BaseServices<T> {
     }
 
     @DELETE
-    @Path("/{id}")
-    public Response delete(@PathParam("id") String id) {
+    @Path("{id}")
+    public Response delete(@PathParam("id") Integer id) {
         final T obj = dao.find(id);
         if (obj == null) return Response.status(Response.Status.NOT_FOUND).build();
         dao.remove(obj);
@@ -51,8 +53,8 @@ public class BaseServices<T> {
     }
 
     @PUT
-    @Path("/{id}")
-    public Response edit(@PathParam("id") String id) {
+    @Path("{id}")
+    public Response edit(@PathParam("id") Integer id) {
         final T obj = dao.find(id);
         if (obj == null) return Response.status(Response.Status.NOT_FOUND).build();
         dao.edit(obj);
