@@ -5,21 +5,13 @@ import fr.uha.shareloc.model.Colocation;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
-public class ColocationDao {
-
-    private static final String UNIT_NAME = "sharelocPU";
-    private EntityManager entityManager;
+public class ColocationDao extends AbstractDao<Colocation> {
 
     public ColocationDao() {
-        final EntityManagerFactory emf = Persistence.createEntityManagerFactory(UNIT_NAME);
-        this.entityManager = emf.createEntityManager();
+        super(Colocation.class);
     }
 
-    public List<Colocation> getColocations() {
-        return entityManager
-                .createQuery("SELECT c FROM Colocation c", Colocation.class)
-                .getResultList();
-    }
 }
