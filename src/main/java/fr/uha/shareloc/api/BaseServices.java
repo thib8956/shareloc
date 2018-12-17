@@ -6,12 +6,16 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-public class BaseServices<T> {
+public abstract class BaseServices<T> {
 
     private final AbstractDao<T> dao;
 
-    BaseServices(Class<T> serviceClass) {
-        this.dao = new AbstractDao<>(serviceClass);
+    BaseServices(AbstractDao<T> dao) {
+        this.dao = dao;
+    }
+
+    public AbstractDao<T> getDao() {
+        return dao;
     }
 
     @GET

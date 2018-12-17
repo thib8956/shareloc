@@ -1,5 +1,6 @@
 package fr.uha.shareloc.api;
 
+import fr.uha.shareloc.dao.AbstractDao;
 import fr.uha.shareloc.model.User;
 
 import javax.ws.rs.Path;
@@ -8,7 +9,7 @@ import javax.ws.rs.Path;
 public class UserServices extends BaseServices<User> {
 
     protected UserServices() {
-        super(User.class);
+        super(new AbstractDao<>(User.class));
     }
 
 }

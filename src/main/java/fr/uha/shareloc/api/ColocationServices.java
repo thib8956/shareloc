@@ -1,6 +1,8 @@
 package fr.uha.shareloc.api;
 
+import fr.uha.shareloc.dao.AbstractDao;
 import fr.uha.shareloc.dao.AccountDao;
+import fr.uha.shareloc.model.AchievedService;
 import fr.uha.shareloc.model.Colocation;
 
 import javax.json.JsonObject;
@@ -16,7 +18,7 @@ public class ColocationServices extends BaseServices<Colocation> {
     private final AccountDao dao;
 
     protected ColocationServices() {
-        super(Colocation.class);
+        super(new AbstractDao<>(Colocation.class));
         this.dao = new AccountDao();
     }
 
