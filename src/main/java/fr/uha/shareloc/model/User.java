@@ -16,6 +16,7 @@ public class User implements Serializable {
     private String firstname;
     private String lastname;
 
+
     public String getEmail() {
         return email;
     }
@@ -46,5 +47,10 @@ public class User implements Serializable {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+
+    public int getId() {
+        return id;
     }
 }

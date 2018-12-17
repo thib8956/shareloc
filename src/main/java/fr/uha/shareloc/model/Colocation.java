@@ -9,10 +9,9 @@ public class Colocation implements Serializable {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Colocation id;
     private String name;
     @OneToOne private User admin;
-    @OneToMany private List<User> members;
     @OneToMany private List<Service> services;
 
     public String getName() {
@@ -21,14 +20,6 @@ public class Colocation implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<User> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<User> members) {
-        this.members = members;
     }
 
     public List<Service> getServices() {
@@ -47,7 +38,7 @@ public class Colocation implements Serializable {
         this.admin = admin;
     }
 
-    public void addMember(User user) {
-        members.add(user);
+    public Colocation getId() {
+        return id;
     }
 }

@@ -1,6 +1,6 @@
 package fr.uha.shareloc.api;
 
-import fr.uha.shareloc.dao.ColocationDao;
+import fr.uha.shareloc.dao.AccountDao;
 import fr.uha.shareloc.model.Colocation;
 
 import javax.json.JsonObject;
@@ -13,11 +13,11 @@ import javax.ws.rs.core.Response;
 @Path("/colocations")
 public class ColocationServices extends BaseServices<Colocation> {
 
-    private final ColocationDao dao;
+    private final AccountDao dao;
 
     protected ColocationServices() {
         super(Colocation.class);
-        this.dao = new ColocationDao();
+        this.dao = new AccountDao();
     }
 
     @POST
