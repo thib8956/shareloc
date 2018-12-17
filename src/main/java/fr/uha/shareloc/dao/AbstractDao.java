@@ -56,7 +56,7 @@ public class AbstractDao<T> {
      *
      * @param entite
      */
-    public void edit(T entite) {
+    public <U> void edit(U entite) {
         final EntityManager em = getEntityManager();
         em.getTransaction().begin();
         em.merge(entite);
@@ -66,10 +66,13 @@ public class AbstractDao<T> {
     /**
      * Methode de suppression d'un objet.
      *
-     * @param entite
+     * @param entity
      */
-    public void remove(T entite) {
-        getEntityManager().remove(getEntityManager().merge(entite));
+    public <U> void remove(U entity) {
+        getEntityManager().getTransaction().begin();
+        final U u = getEntityManager().merge(entity);
+        getEntityManager().remove(u);
+        getEntityManager().getTransaction().commit();
     }
 
     /**
@@ -80,6 +83,10 @@ public class AbstractDao<T> {
      * @return
      */
     public T find(Object id) {
+        return getEntityManager().find(clazz, id);
+    }
+
+    public <U> U find(Object id, Class<U> clazz) {
         return getEntityManager().find(clazz, id);
     }
 
