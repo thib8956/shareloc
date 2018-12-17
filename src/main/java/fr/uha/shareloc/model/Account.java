@@ -37,6 +37,19 @@ public class Account implements Serializable {
         return points;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
+    public void setColoc(Colocation coloc) {
+        this.coloc = coloc;
+    }
 
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
+
+    public Integer getId() {
+        return id;
+    }
 }

@@ -11,6 +11,7 @@
         <class>fr.uha.shareloc.model.User</class>
         <class>fr.uha.shareloc.model.AchievedService</class>
         <class>fr.uha.shareloc.model.Service</class>
+        <class>fr.uha.shareloc.model.Account</class>
 
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/shareloc?serverTimezone=UTC" />

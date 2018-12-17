@@ -9,7 +9,7 @@ public class Colocation implements Serializable {
 
     @Id
     @GeneratedValue
-    private Colocation id;
+    private int id;
     private String name;
     @OneToOne private User admin;
     @OneToMany private List<Service> services;
@@ -38,7 +38,4 @@ public class Colocation implements Serializable {
         this.admin = admin;
     }
 
-    public Colocation getId() {
-        return id;
-    }
 }

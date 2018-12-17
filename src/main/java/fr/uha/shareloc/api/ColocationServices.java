@@ -26,7 +26,7 @@ public class ColocationServices extends BaseServices<Colocation> {
     public Response inviteUser(JsonObject jsonObject) {
         final int userId = jsonObject.getInt("userId");
         final int colocId = jsonObject.getInt("colocId");
-        if (dao.inviteUser(colocId, userId)) return Response.ok().build();
+        if (dao.inviteUser(colocId, userId)) return Response.status(Response.Status.CREATED).build();
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
