@@ -38,4 +38,7 @@ public class Colocation implements Serializable {
         this.admin = admin;
     }
 
+    public void addService(Service service) {
+        services.add(service);
+    }
 }

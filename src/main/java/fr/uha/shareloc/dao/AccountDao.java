@@ -11,7 +11,7 @@ public class AccountDao extends AbstractDao<Account> {
     }
 
     public boolean inviteUser(int colocId, int userId) {
-        final Colocation colocation = getEntityManager().find(Colocation.class, colocId);;
+        final Colocation colocation = getEntityManager().find(Colocation.class, colocId);
         final User user = getEntityManager().find(User.class, userId);
         if (colocation == null || user == null) return false;
         create(new Account(user, colocation, 0));

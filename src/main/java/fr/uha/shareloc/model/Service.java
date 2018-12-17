@@ -1,9 +1,6 @@
 package fr.uha.shareloc.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,6 +13,7 @@ public class Service implements Serializable {
     private String title;
     private String description;
     private int cost;
+    @OneToOne private User creator;
     @OneToMany private List<User> recipients;  // liste des users beneficiant du service
 
     public String getTitle() {
