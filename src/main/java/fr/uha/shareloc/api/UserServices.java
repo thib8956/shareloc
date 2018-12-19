@@ -1,6 +1,6 @@
 package fr.uha.shareloc.api;
 
-import fr.uha.shareloc.dao.UserDao;
+import fr.uha.shareloc.dao.BaseDao;
 import fr.uha.shareloc.model.Service;
 import fr.uha.shareloc.model.User;
 
@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 public class UserServices extends BaseServices<User> {
 
     protected UserServices() {
-        super(new UserDao());
+        super(new BaseDao(), User.class);
     }
 
     @POST
@@ -30,8 +30,8 @@ public class UserServices extends BaseServices<User> {
         if (s == null) return Response.status(Response.Status.NOT_FOUND).build();
         final int voteCount = s.vote(vote);
         // TODO use dao.count() instead
-        final long usersCount = getDao().findAll().size();
-        getDao().edit(s);
+        final long usersCount = getDao().findAll(User.class).size();
+        getDao().update(s);
 
         if (voteCount == usersCount) countVotes(s, usersCount);
         return Response.ok().build();
@@ -40,7 +40,7 @@ public class UserServices extends BaseServices<User> {
     private void countVotes(Service s, long usersCount) {
         if (s.getUpvotes() > usersCount/2) {
             s.setAccepted();
-            getDao().edit(s);
+            getDao().update(s);
         } else {
             getDao().remove(s);
         }
