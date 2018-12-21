@@ -33,7 +33,7 @@ public class BaseServicesTest {
         verify(dao).create(entity);
         final int statusCode = Response.Status.CREATED.getStatusCode();
         assertThat(response.getStatus(), is(statusCode));
-        assertThat(response.getEntity(), is("Saved : " + entity));
+        assertThat(response.getEntity(), is(entity));
     }
 
     @Test
@@ -104,6 +104,15 @@ public class BaseServicesTest {
         final Response response = services.edit(42, entity);
         verify(dao).update(entity);
         assertThat(response.getStatus(), is(Response.Status.CREATED.getStatusCode()));
-        assertThat(response.getEntity(), is("Updated : " + entity));
+        assertThat(response.getEntity(), is(entity));
+    }
+
+    @Test
+    public void testCount_empty() {
+        when(dao.count(Object.class)).thenReturn(0L);
+        final Response response = services.count();
+        verify(dao).count(Object.class);
+        assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
+        assertThat(response.getEntity(), is(0L));
     }
 }

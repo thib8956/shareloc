@@ -45,7 +45,7 @@ public abstract class BaseServices<T> {
         // TODO: error checking & management
         final T createdResource = dao.create(resource);
         return Response.status(Response.Status.CREATED)
-                .entity("Saved : " + createdResource)
+                .entity(createdResource)
                 .build();
     }
 
@@ -67,7 +67,7 @@ public abstract class BaseServices<T> {
 //        if (obj == null) return Response.status(Response.Status.NOT_FOUND).build();
         final T updatedEntity = dao.update(entity);
         return Response.status(Response.Status.CREATED)
-                .entity("Updated : " + updatedEntity)
+                .entity(updatedEntity)
                 .build();
     }
 
