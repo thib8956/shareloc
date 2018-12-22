@@ -1,24 +1,30 @@
 package fr.uha.shareloc.api;
 
-import fr.uha.shareloc.dao.AbstractDao;
+import fr.uha.shareloc.dao.BaseDao;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-public class BaseServices<T> {
+public abstract class BaseServices<T> {
 
-    private final AbstractDao<T> dao;
+    private final BaseDao dao;
+    private Class<T> clazz;
 
-    BaseServices(Class<T> serviceClass) {
-        this.dao = new AbstractDao<>(serviceClass);
+    BaseServices(BaseDao dao, Class<T> clazz) {
+        this.dao = dao;
+        this.clazz = clazz;
+    }
+
+    protected BaseDao getDao() {
+        return dao;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
         return Response.ok()
-                .entity(dao.findAll())
+                .entity(dao.findAll(clazz))
                 .build();
     }
 
@@ -26,7 +32,7 @@ public class BaseServices<T> {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(@PathParam("id") Integer id) {
-        final T obj = dao.find(id);
+        final T obj = dao.find(id, clazz);
         if (obj == null) return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok()
                 .entity(obj)
@@ -37,16 +43,16 @@ public class BaseServices<T> {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response create(T resource) {
         // TODO: error checking & management
-        dao.create(resource);
+        final T createdResource = dao.create(resource);
         return Response.status(Response.Status.CREATED)
-                .entity("Saved : " + resource)
+                .entity(createdResource)
                 .build();
     }
 
     @DELETE
     @Path("{id}")
     public Response delete(@PathParam("id") Integer id) {
-        final T obj = dao.find(id);
+        final T obj = dao.find(id, clazz);
         if (obj == null) return Response.status(Response.Status.NOT_FOUND).build();
         dao.remove(obj);
         return Response.ok().build();
@@ -54,12 +60,20 @@ public class BaseServices<T> {
 
     @PUT
     @Path("{id}")
-    public Response edit(@PathParam("id") Integer id) {
-        final T obj = dao.find(id);
-        if (obj == null) return Response.status(Response.Status.NOT_FOUND).build();
-        dao.edit(obj);
+    @Consumes(MediaType.APPLICATION_JSON)
+    // FIXME
+    public Response edit(@PathParam("id") Integer id, T entity) {
+//        final T obj = dao.find(id, clazz);
+//        if (obj == null) return Response.status(Response.Status.NOT_FOUND).build();
+        final T updatedEntity = dao.update(entity);
         return Response.status(Response.Status.CREATED)
-                .entity("Updated : " + obj)
+                .entity(updatedEntity)
                 .build();
+    }
+
+    @GET
+    @Path("/count")
+    public Response count() {
+        return Response.ok().entity(dao.count(clazz)).build();
     }
 }

@@ -11,12 +11,13 @@
         <class>fr.uha.shareloc.model.User</class>
         <class>fr.uha.shareloc.model.AchievedService</class>
         <class>fr.uha.shareloc.model.Service</class>
+        <class>fr.uha.shareloc.model.Account</class>
 
         <properties>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/shareloc" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/shareloc?serverTimezone=UTC" />
             <property name="javax.persistence.jdbc.user" value="root" />
             <property name="javax.persistence.jdbc.password" value="" />
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
             <!-- Create tables at runtime-->
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
         </properties>

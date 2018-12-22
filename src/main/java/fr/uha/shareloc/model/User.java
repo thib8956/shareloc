@@ -1,7 +1,6 @@
 package fr.uha.shareloc.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 
@@ -9,12 +8,22 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue
-    private int id;
+    private String login;
     private String email;
     private String password;
     private String firstname;
     private String lastname;
+
+    public User() {
+    }
+
+    public User(String login, String password, String firstname, String lastname) {
+        this.login = login;
+        this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
+
 
     public String getEmail() {
         return email;
@@ -46,5 +55,14 @@ public class User implements Serializable {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }

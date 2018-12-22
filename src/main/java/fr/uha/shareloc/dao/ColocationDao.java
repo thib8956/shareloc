@@ -1,25 +1,23 @@
 package fr.uha.shareloc.dao;
 
+import fr.uha.shareloc.model.Account;
 import fr.uha.shareloc.model.Colocation;
+import fr.uha.shareloc.model.Service;
 import fr.uha.shareloc.model.User;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaQuery;
-import java.util.List;
+public class ColocationDao extends BaseDao {
 
-public class ColocationDao extends AbstractDao<Colocation> {
+    public ColocationDao() {}
 
-    public ColocationDao() {
-        super(Colocation.class);
+    public Service findService(Integer serviceId) {
+        return find(serviceId, Service.class);
     }
 
     public boolean inviteUser(int colocId, int userId) {
-        final Colocation colocation = find(colocId);
-        final User user = getEntityManager().find(User.class, userId);
+        final Colocation colocation =find(colocId, Colocation.class);
+        final User user = find(userId, User.class);
         if (colocation == null || user == null) return false;
-        colocation.addMember(user);
+        create(new Account(user, colocation, 0));
         return true;
     }
 }
