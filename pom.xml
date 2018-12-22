@@ -17,6 +17,7 @@
         <mysql-connector.version>8.0.13</mysql-connector.version>
         <mockito-core.version>2.23.4</mockito-core.version>
         <junit.version>4.12</junit.version>
+        <jose4j.version>0.6.4</jose4j.version>
     </properties>
 
     <dependencyManagement>
@@ -55,6 +56,12 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bitbucket.b_c</groupId>
+            <artifactId>jose4j</artifactId>
+            <version>${jose4j.version}</version>
         </dependency>
 
         <!-- Test dependencies -->
