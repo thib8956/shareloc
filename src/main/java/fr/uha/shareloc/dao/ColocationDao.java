@@ -11,7 +11,7 @@ public class ColocationDao extends BaseDao {
         return find(serviceId, Service.class);
     }
 
-    public boolean inviteUser(int colocId, int userId) {
+    public boolean inviteUser(int colocId, final String userId) {
         final Colocation colocation = find(colocId, Colocation.class);
         final User user = find(userId, User.class);
         if (colocation == null || user == null) return false;
