@@ -17,7 +17,8 @@ public class Service implements Serializable {
     private int downvotes;
     private boolean accepted = false;
     @OneToOne private User creator;
-    @OneToMany private List<User> recipients;  // liste des users beneficiant du service
+    @OneToOne private User from = null; // Utilisateur réalisant le service
+    @OneToMany private List<User> recipients;  // Liste des utilisateurs bénéficiant du service
 
     public String getTitle() {
         return title;
@@ -59,5 +60,17 @@ public class Service implements Serializable {
 
     public boolean isAccepted() {
         return accepted;
+    }
+
+    public User getFrom() {
+        return from;
+    }
+
+    public void setFrom(User from) {
+        this.from = from;
+    }
+
+    public int getId() {
+        return id;
     }
 }

@@ -1,19 +1,18 @@
 package fr.uha.shareloc.api;
 
-import fr.uha.shareloc.dao.BaseDao;
+import fr.uha.shareloc.dao.UsersDao;
+import fr.uha.shareloc.model.Colocation;
 import fr.uha.shareloc.model.Service;
 import fr.uha.shareloc.model.User;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
 @Path("/users")
 public class UserServices extends BaseServices<User> {
 
     protected UserServices() {
-        super(new BaseDao(), User.class);
+        super(new UsersDao(), User.class);
     }
 
     @POST
@@ -31,6 +30,14 @@ public class UserServices extends BaseServices<User> {
         return Response.ok().build();
     }
 
+    @POST
+    @Path("reserve")
+    public Response reserveService(@QueryParam("login") String login, @QueryParam("serviceId") int serviceId) {
+        final UsersDao dao = (UsersDao) getDao();
+        // TODO: better error checking (service already reserved...)
+        if (dao.reserveService(login, serviceId)) return Response.ok().build();
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
     private void countVotes(Service s, long usersCount) {
         if (s.getUpvotes() > usersCount / 2) {
             s.setAccepted();

@@ -14,7 +14,7 @@ public class BaseDao {
     private static EntityManagerFactory emf = Persistence.createEntityManagerFactory(UNIT_NAME);
     private static EntityManager entityManager = null;
 
-    private EntityManager getEntityManager() {
+    protected EntityManager getEntityManager() {
         if (entityManager == null) {
             entityManager = emf.createEntityManager();
         }
