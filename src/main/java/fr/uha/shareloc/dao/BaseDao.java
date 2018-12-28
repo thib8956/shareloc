@@ -6,7 +6,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import java.util.Collections;
 import java.util.List;
 
 public class BaseDao {
@@ -24,10 +23,11 @@ public class BaseDao {
 
     public <T> T create(T entity) {
         final EntityManager em = getEntityManager();
-        em.getTransaction().begin();
+        final EntityTransaction tx = em.getTransaction();
+        tx.begin();
         em.persist(entity);
         em.flush();
-        em.getTransaction().commit();
+        tx.commit();
         return entity;
     }
 
@@ -39,25 +39,24 @@ public class BaseDao {
         final EntityManager em = getEntityManager();
         final CriteriaQuery<T> criteriaQuery = em.getCriteriaBuilder().createQuery(clazz);
         criteriaQuery.select(criteriaQuery.from(clazz));
-        final List<T> results = em.createQuery(criteriaQuery).getResultList();
-        if (results == null) {
-            return Collections.emptyList();
-        }
-        return results;
+        return em.createQuery(criteriaQuery).getResultList();
     }
 
     public <T> T update(T entite) {
-        getEntityManager().getTransaction().begin();
+        final EntityTransaction tx = getEntityManager().getTransaction();
+        tx.begin();
         final T updated = getEntityManager().merge(entite);
-        getEntityManager().getTransaction().commit();
+        tx.commit();
         return updated;
     }
 
     public <T> void remove(T entity) {
-        getEntityManager().getTransaction().begin();
-        final T t = getEntityManager().merge(entity);
-        getEntityManager().remove(t);
-        getEntityManager().getTransaction().commit();
+        final EntityManager em = getEntityManager();
+        final EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        final T t = em.merge(entity);
+        em.remove(t);
+        tx.commit();
     }
 
     public <T> long count(Class<T> clazz) {
