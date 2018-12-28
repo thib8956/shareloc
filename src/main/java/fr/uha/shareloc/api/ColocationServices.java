@@ -6,7 +6,6 @@ import fr.uha.shareloc.model.Service;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
@@ -28,10 +27,10 @@ public class ColocationServices extends BaseServices<Colocation> {
     }
 
     @POST
-    @Path("{id}/offer/{serviceId}")
-    public Response offer(@PathParam("id") Integer id, @PathParam("serviceId") Integer serviceId) {
+    @Path("offer")
+    public Response offer(@QueryParam("colocationId") int colocationId, @QueryParam("serviceId") int serviceId) {
         final ColocationDao dao = (ColocationDao) getDao();
-        final Colocation c = dao.find(id, Colocation.class);
+        final Colocation c = dao.find(colocationId, Colocation.class);
         final Service s = dao.findService(serviceId);
         if (c == null || s == null) return Response.status(Response.Status.NOT_FOUND).build();
         c.addService(s);
