@@ -3,6 +3,7 @@ package fr.uha.shareloc.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.net.URI;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,18 @@ public class AchievedService implements Serializable {
     private Date date;
     private URI picture;
     private boolean valid;
+
+    public AchievedService(User from, List<User> to, Service service) {
+        this.from = from;
+        this.to = to;
+        this.service = service;
+        this.date = new Date();
+    }
+
+    // All @entity classes must have a public/protected no-arg constructor
+    protected AchievedService() {
+        this(null, Collections.emptyList(), null);
+    }
 
     public User getFrom() {
         return from;

@@ -1,9 +1,6 @@
 package fr.uha.shareloc.dao;
 
-import fr.uha.shareloc.model.Account;
-import fr.uha.shareloc.model.Colocation;
-import fr.uha.shareloc.model.Service;
-import fr.uha.shareloc.model.User;
+import fr.uha.shareloc.model.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -53,5 +50,19 @@ public class UsersDao extends BaseDao {
         update(service);
         return true;
 
+    }
+
+    public boolean realizeService(String login, int serviceId) {
+        final User user = find(login, User.class);
+        final Service service = find(serviceId, Service.class);
+        // TODO: return error values instead of a boolean
+        // Check if the user has reserved the service
+        if (service.getFrom() == null || service.getFrom() != user) return false;
+        // Make the service an AchievedService
+        final AchievedService as = new AchievedService(user, service.getRecipients(), service);
+        service.setAchieved(true);
+        update(service);
+        create(as);
+        return true;
     }
 }

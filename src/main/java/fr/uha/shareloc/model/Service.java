@@ -16,6 +16,7 @@ public class Service implements Serializable {
     private int upvotes;
     private int downvotes;
     private boolean accepted = false;
+    private boolean achieved = false;
     @OneToOne private User creator;
     @OneToOne private User from = null; // Utilisateur réalisant le service
     @OneToMany private List<User> recipients;  // Liste des utilisateurs bénéficiant du service
@@ -72,5 +73,17 @@ public class Service implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public List<User> getRecipients() {
+        return recipients;
+    }
+
+    public boolean isAchieved() {
+        return achieved;
+    }
+
+    public void setAchieved(boolean achieved) {
+        this.achieved = achieved;
     }
 }
