@@ -5,7 +5,13 @@ import fr.uha.shareloc.model.Colocation;
 import fr.uha.shareloc.model.Service;
 import fr.uha.shareloc.model.User;
 
+import javax.persistence.EntityManager;
+
 public class ColocationDao extends BaseDao {
+
+    ColocationDao(EntityManager entityManager) {
+        super(entityManager);
+    }
 
     public Service findService(Integer serviceId) {
         return find(serviceId, Service.class);

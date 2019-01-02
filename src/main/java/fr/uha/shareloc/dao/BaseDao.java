@@ -1,68 +1,62 @@
 package fr.uha.shareloc.dao;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 public class BaseDao {
 
-    private static final String UNIT_NAME = "sharelocPU";
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory(UNIT_NAME);
-    private static EntityManager entityManager = null;
+    private EntityManager entityManager;
 
-    protected EntityManager getEntityManager() {
-        if (entityManager == null) {
-            entityManager = emf.createEntityManager();
-        }
-        return entityManager;
+    BaseDao(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     public <T> T create(T entity) {
-        final EntityManager em = getEntityManager();
-        final EntityTransaction tx = em.getTransaction();
+        final EntityTransaction tx = entityManager.getTransaction();
         tx.begin();
-        em.persist(entity);
-        em.flush();
+        entityManager.persist(entity);
+        entityManager.flush();
         tx.commit();
         return entity;
     }
 
     public <T> T find(Object id, Class<T> clazz) {
-        return getEntityManager().find(clazz, id);
+        return entityManager.find(clazz, id);
     }
 
     public <T> List<T> findAll(Class<T> clazz) {
-        final EntityManager em = getEntityManager();
-        final CriteriaQuery<T> criteriaQuery = em.getCriteriaBuilder().createQuery(clazz);
+        final CriteriaQuery<T> criteriaQuery = entityManager.getCriteriaBuilder().createQuery(clazz);
         criteriaQuery.select(criteriaQuery.from(clazz));
-        return em.createQuery(criteriaQuery).getResultList();
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
     public <T> T update(T entite) {
-        final EntityTransaction tx = getEntityManager().getTransaction();
+        final EntityTransaction tx = entityManager.getTransaction();
         tx.begin();
-        final T updated = getEntityManager().merge(entite);
+        final T updated = entityManager.merge(entite);
         tx.commit();
         return updated;
     }
 
     public <T> void remove(T entity) {
-        final EntityManager em = getEntityManager();
-        final EntityTransaction tx = em.getTransaction();
+        final EntityTransaction tx = entityManager.getTransaction();
         tx.begin();
-        final T t = em.merge(entity);
-        em.remove(t);
+        final T t = entityManager.merge(entity);
+        entityManager.remove(t);
         tx.commit();
     }
 
     public <T> long count(Class<T> clazz) {
-        final CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         final CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         cq.select(cb.count(cq.from(clazz)));
         return entityManager.createQuery(cq).getSingleResult();
+    }
+
+    protected EntityManager getEntityManager() {
+        return entityManager;
     }
 }

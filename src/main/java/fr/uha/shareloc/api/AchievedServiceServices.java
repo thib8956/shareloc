@@ -1,6 +1,6 @@
 package fr.uha.shareloc.api;
 
-import fr.uha.shareloc.dao.BaseDao;
+import fr.uha.shareloc.dao.DaoFactory;
 import fr.uha.shareloc.model.AchievedService;
 
 import javax.ws.rs.Path;
@@ -9,7 +9,7 @@ import javax.ws.rs.Path;
 public class AchievedServiceServices extends BaseServices<AchievedService> {
 
     protected AchievedServiceServices() {
-        super(new BaseDao(), AchievedService.class);
+        super(DaoFactory.createBaseDao(), AchievedService.class);
     }
 
 }

@@ -1,5 +1,6 @@
 package fr.uha.shareloc.api;
 
+import fr.uha.shareloc.dao.DaoFactory;
 import fr.uha.shareloc.dao.UsersDao;
 import fr.uha.shareloc.model.Service;
 import fr.uha.shareloc.model.User;
@@ -13,7 +14,7 @@ import javax.ws.rs.core.Response;
 public class UserServices extends BaseServices<User> {
 
     protected UserServices() {
-        super(new UsersDao(), User.class);
+        super(DaoFactory.createUsersDao(), User.class);
     }
 
     @POST

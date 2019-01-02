@@ -11,6 +11,10 @@ import java.util.Optional;
 
 public class UsersDao extends BaseDao {
 
+    UsersDao(EntityManager entityManager) {
+        super(entityManager);
+    }
+
     private Colocation findColocationForService(int serviceId) {
         final EntityManager em = getEntityManager();
         final CriteriaBuilder cb = em.getCriteriaBuilder();
