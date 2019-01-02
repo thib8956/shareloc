@@ -4,9 +4,9 @@ import fr.uha.shareloc.dao.UsersDao;
 import fr.uha.shareloc.model.Service;
 import fr.uha.shareloc.model.User;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 @Path("/users")
@@ -18,7 +18,7 @@ public class UserServices extends BaseServices<User> {
 
     @POST
     @Path("vote")
-    public Response voteForService(@QueryParam("serviceId") int serviceId, @QueryParam("vote") int vote) {
+    public Response voteForService(@FormParam("serviceId") int serviceId, @FormParam("vote") int vote) {
         final Service s = getDao().find(serviceId, Service.class);
 
         if (vote != 1 && vote != -1) return Response.status(500).build();
@@ -33,7 +33,7 @@ public class UserServices extends BaseServices<User> {
 
     @POST
     @Path("reserve")
-    public Response reserveService(@QueryParam("login") String login, @QueryParam("serviceId") int serviceId) {
+    public Response reserveService(@FormParam("login") String login, @FormParam("serviceId") int serviceId) {
         final UsersDao dao = (UsersDao) getDao();
         // TODO: better error checking (service already reserved...)
         if (dao.reserveService(login, serviceId)) return Response.ok().build();
@@ -42,7 +42,7 @@ public class UserServices extends BaseServices<User> {
 
     @POST
     @Path("realize")
-    public Response realizeService(@QueryParam("login") String login, @QueryParam("serviceId") int serviceId) {
+    public Response realizeService(@FormParam("login") String login, @FormParam("serviceId") int serviceId) {
         final UsersDao dao = (UsersDao) getDao();
         // TODO: better error checking (service already realized...)
         if (dao.realizeService(login, serviceId)) return Response.ok().build();

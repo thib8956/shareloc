@@ -4,9 +4,9 @@ import fr.uha.shareloc.dao.ColocationDao;
 import fr.uha.shareloc.model.Colocation;
 import fr.uha.shareloc.model.Service;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 @Path("/colocations")
@@ -21,14 +21,14 @@ public class ColocationServices extends BaseServices<Colocation> {
 
     @POST
     @Path("invite")
-    public Response inviteUser(@QueryParam("login") String login, @QueryParam("colocId") int colocId) {
+    public Response inviteUser(@FormParam("login") String login, @FormParam("colocId") int colocId) {
         if (dao.inviteUser(colocId, login)) return Response.status(Response.Status.CREATED).build();
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @POST
     @Path("offer")
-    public Response offer(@QueryParam("colocationId") int colocationId, @QueryParam("serviceId") int serviceId) {
+    public Response offer(@FormParam("colocationId") int colocationId, @FormParam("serviceId") int serviceId) {
         final ColocationDao dao = (ColocationDao) getDao();
         final Colocation c = dao.find(colocationId, Colocation.class);
         final Service s = dao.findService(serviceId);
