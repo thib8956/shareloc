@@ -1,13 +1,14 @@
 package fr.uha.shareloc.dao;
 
-import fr.uha.shareloc.model.*;
+import fr.uha.shareloc.model.AchievedService;
+import fr.uha.shareloc.model.Colocation;
+import fr.uha.shareloc.model.Service;
+import fr.uha.shareloc.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Root;
-import java.util.Optional;
 
 public class UsersDao extends BaseDao {
 
@@ -15,7 +16,7 @@ public class UsersDao extends BaseDao {
         super(entityManager);
     }
 
-    private Colocation findColocationForService(int serviceId) {
+    public Colocation findColocationForService(int serviceId) {
         final EntityManager em = getEntityManager();
         final CriteriaBuilder cb = em.getCriteriaBuilder();
         final CriteriaQuery<Colocation> cq = cb.createQuery(Colocation.class);
@@ -24,22 +25,10 @@ public class UsersDao extends BaseDao {
         return em.createQuery(cq).getSingleResult();
     }
 
-    private Optional<Account> findAccount(User user, Colocation colocation) {
-        final EntityManager em = getEntityManager();
-        final CriteriaBuilder cb = em.getCriteriaBuilder();
-        final CriteriaQuery<Account> cq = cb.createQuery(Account.class);
-        final Root<Account> account = cq.from(Account.class);
-        cq.select(account).where(cb.and(
-                cb.equal(account.get("user"), user),
-                cb.equal(account.get("colocation"), colocation)
-        ));
-
-        return em.createQuery(cq).getResultList().stream().findFirst();
-    }
-
     private boolean hasSameColocation(User user, Service service) {
+        final AccountDao accountDao = DaoFactory.createAccountDao();
         final Colocation coloc = findColocationForService(service.getId());
-        return findAccount(user, coloc).isPresent();
+        return accountDao.findAccount(user, coloc) != null;
     }
 
     public boolean reserveService(String login, int serviceId) {

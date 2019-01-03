@@ -22,4 +22,8 @@ public class DaoFactory {
         return new UsersDao(em);
     }
 
+    public static AccountDao createAccountDao() {
+        return new AccountDao(em);
+    }
+
 }
