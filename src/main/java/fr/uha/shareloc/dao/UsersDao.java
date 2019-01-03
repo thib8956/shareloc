@@ -6,9 +6,6 @@ import fr.uha.shareloc.model.Service;
 import fr.uha.shareloc.model.User;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 
 public class UsersDao extends BaseDao {
 
@@ -16,18 +13,10 @@ public class UsersDao extends BaseDao {
         super(entityManager);
     }
 
-    public Colocation findColocationForService(int serviceId) {
-        final EntityManager em = getEntityManager();
-        final CriteriaBuilder cb = em.getCriteriaBuilder();
-        final CriteriaQuery<Colocation> cq = cb.createQuery(Colocation.class);
-        final Join<Colocation, Service> ss = cq.from(Colocation.class).join("services");
-        cq.where(cb.equal(ss.get("id"), serviceId));
-        return em.createQuery(cq).getSingleResult();
-    }
-
     private boolean hasSameColocation(User user, Service service) {
         final AccountDao accountDao = DaoFactory.createAccountDao();
-        final Colocation coloc = findColocationForService(service.getId());
+        final ColocationDao colocationDao = DaoFactory.createColocationDao();
+        final Colocation coloc = colocationDao.findColocationForService(service.getId());
         return accountDao.findAccount(user, coloc) != null;
     }
 

@@ -33,7 +33,7 @@ public class ColocationServices extends BaseServices<Colocation> {
     public Response offer(@FormParam("colocationId") int colocationId, @FormParam("serviceId") int serviceId) {
         final ColocationDao dao = (ColocationDao) getDao();
         final Colocation c = dao.find(colocationId, Colocation.class);
-        final Service s = dao.findService(serviceId);
+        final Service s = dao.find(serviceId);
         if (c == null || s == null) return Response.status(Response.Status.NOT_FOUND).build();
         c.addService(s);
         getDao().update(c);

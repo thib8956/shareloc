@@ -8,7 +8,7 @@ import java.util.List;
 
 public class BaseDao {
 
-    private EntityManager entityManager;
+    protected final EntityManager entityManager;
 
     BaseDao(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -54,9 +54,5 @@ public class BaseDao {
         final CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         cq.select(cb.count(cq.from(clazz)));
         return entityManager.createQuery(cq).getSingleResult();
-    }
-
-    protected EntityManager getEntityManager() {
-        return entityManager;
     }
 }

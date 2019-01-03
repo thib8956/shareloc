@@ -16,9 +16,9 @@ import static fr.uha.shareloc.util.JPAHelper.getSingleResultOrNull;
 
 public class AccountDao extends BaseDao {
 
-    private final CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+    private final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     // Update all accounts
-    private EntityTransaction transaction = getEntityManager().getTransaction();
+    private EntityTransaction transaction = entityManager.getTransaction();
 
     AccountDao(EntityManager entityManager) {
         super(entityManager);
@@ -31,7 +31,7 @@ public class AccountDao extends BaseDao {
                 cb.equal(account.get("user"), u),
                 cb.equal(account.get("colocation"), c)
         ));
-        return getSingleResultOrNull(getEntityManager().createQuery(cq));
+        return getSingleResultOrNull(entityManager.createQuery(cq));
     }
 
     // TODO test this method
@@ -42,10 +42,12 @@ public class AccountDao extends BaseDao {
                 account.get("user").in(users),
                 cb.equal(account.get("colocation"), c)
         ));
-        return getEntityManager().createQuery(cq).getResultList();
+        return entityManager.createQuery(cq).getResultList();
     }
 
-    public void updateAccounts(User fromUser, List<User> recipients, Service service, Colocation coloc) {
+    public void updateAccountsWithService(User fromUser, List<User> recipients, Service service) {
+        final ColocationDao colocationDao = DaoFactory.createColocationDao();
+        final Colocation coloc = colocationDao.findColocationForService(service.getId());
         final int serviceCost = service.getCost();
         final List<Account> recipientsAccounts = findAllAccounts(recipients, coloc);
         int pointsPerUser = serviceCost / recipients.size();
@@ -54,8 +56,8 @@ public class AccountDao extends BaseDao {
         recipientsAccounts.forEach(a -> a.removePoints(pointsPerUser));
         // Update all entities in the database
         transaction.begin();
-        getEntityManager().merge(fromAccount);
-        recipientsAccounts.forEach(a -> getEntityManager().merge(a));
+        entityManager.merge(fromAccount);
+        recipientsAccounts.forEach(entityManager::merge);
         transaction.commit();
     }
 
