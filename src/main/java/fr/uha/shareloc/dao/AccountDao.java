@@ -16,12 +16,13 @@ import static fr.uha.shareloc.util.JPAHelper.getSingleResultOrNull;
 
 public class AccountDao extends BaseDao {
 
-    private final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-    // Update all accounts
-    private EntityTransaction transaction = entityManager.getTransaction();
+    private final CriteriaBuilder cb;
+    private final EntityTransaction transaction;
 
     AccountDao(EntityManager entityManager) {
         super(entityManager);
+        cb = entityManager.getCriteriaBuilder();
+        transaction = entityManager.getTransaction();
     }
 
     Account findAccount(User u, Colocation c) {

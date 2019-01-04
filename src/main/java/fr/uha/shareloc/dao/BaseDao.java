@@ -9,9 +9,11 @@ import java.util.List;
 public class BaseDao {
 
     protected final EntityManager entityManager;
+    private CriteriaBuilder criteriaBuilder;
 
     BaseDao(EntityManager entityManager) {
         this.entityManager = entityManager;
+        this.criteriaBuilder = entityManager.getCriteriaBuilder();
     }
 
     public <T> T create(T entity) {
@@ -28,7 +30,7 @@ public class BaseDao {
     }
 
     public <T> List<T> findAll(Class<T> clazz) {
-        final CriteriaQuery<T> criteriaQuery = entityManager.getCriteriaBuilder().createQuery(clazz);
+        final CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(clazz);
         criteriaQuery.select(criteriaQuery.from(clazz));
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
@@ -50,9 +52,8 @@ public class BaseDao {
     }
 
     public <T> long count(Class<T> clazz) {
-        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        final CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        cq.select(cb.count(cq.from(clazz)));
+        final CriteriaQuery<Long> cq = criteriaBuilder.createQuery(Long.class);
+        cq.select(criteriaBuilder.count(cq.from(clazz)));
         return entityManager.createQuery(cq).getSingleResult();
     }
 }

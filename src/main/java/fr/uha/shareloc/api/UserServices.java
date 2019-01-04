@@ -36,18 +36,18 @@ public class UserServices extends BaseServices<User> {
     @Path("reserve")
     public Response reserveService(@FormParam("login") String login, @FormParam("serviceId") int serviceId) {
         final UsersDao dao = (UsersDao) getDao();
-        // TODO: better error checking (service already reserved...)
-        if (dao.reserveService(login, serviceId)) return Response.ok().build();
-        return Response.status(Response.Status.NOT_FOUND).build();
+        final UsersDao.QueryStatus status = dao.reserveService(login, serviceId);
+        if (status.success) return Response.ok().build();
+        return Response.status(Response.Status.BAD_REQUEST).entity(status.message).build();
     }
 
     @POST
     @Path("realize")
     public Response realizeService(@FormParam("login") String login, @FormParam("serviceId") int serviceId) {
         final UsersDao dao = (UsersDao) getDao();
-        // TODO: better error checking (service already realized...)
-        if (dao.realizeService(login, serviceId)) return Response.ok().build();
-        return Response.status(Response.Status.NOT_FOUND).build();
+        final UsersDao.QueryStatus status = dao.realizeService(login, serviceId);
+        if (status.success) return Response.ok().build();
+        return Response.status(Response.Status.BAD_REQUEST).entity(status.message).build();
     }
 
     private void countVotes(Service s, long usersCount) {

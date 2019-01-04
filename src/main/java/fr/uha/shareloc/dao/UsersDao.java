@@ -20,31 +20,53 @@ public class UsersDao extends BaseDao {
         return accountDao.findAccount(user, coloc) != null;
     }
 
-    public boolean reserveService(String login, int serviceId) {
+    public QueryStatus reserveService(String login, int serviceId) {
         final User user = find(login, User.class);
         final Service service = find(serviceId, Service.class);
-        // TODO: return error values instead of a boolean
+        if (service == null) return new QueryStatus(false, "Service " + serviceId + " not found");
+        if (user == null) return new QueryStatus(false, "User " + login + "not found");
         // Check if the service is already reserved
-        if (service.getFrom() != null) return false;
+        if (service.getFrom() != null) {
+            return new QueryStatus(false, "Service already reserved");
+        }
         // Check if the user and the service are in the same colocation
-        if (!hasSameColocation(user, service)) return false;
+        if (!hasSameColocation(user, service)) {
+            return new QueryStatus(false, "The user and the service must be in the same colocation");
+        }
+
         service.setFrom(user);
         update(service);
-        return true;
-
+        return new QueryStatus(true);
     }
 
-    public boolean realizeService(String login, int serviceId) {
+    public QueryStatus realizeService(String login, int serviceId) {
         final User user = find(login, User.class);
         final Service service = find(serviceId, Service.class);
-        // TODO: return error values instead of a boolean
+        if (service == null) return new QueryStatus(false, "Service " + serviceId + " not found");
+        if (user == null) return new QueryStatus(false, "User " + login + "not found");
         // Check if the user has reserved the service
-        if (service.getFrom() == null || service.getFrom() != user) return false;
+        if (service.getFrom() == null || service.getFrom() != user) {
+            return new QueryStatus(false, "User " + login + " has not reserved this service");
+        }
         // Make the service an AchievedService
         final AchievedService as = new AchievedService(user, service.getRecipients(), service);
         service.setAchieved(true);
         update(service);
         create(as);
-        return true;
+        return new QueryStatus(true);
+    }
+
+    public static class QueryStatus {
+        public final boolean success;
+        public final String message;
+
+        QueryStatus(boolean success, String message) {
+            this.success = success;
+            this.message = message;
+        }
+
+        QueryStatus(boolean success) {
+            this(success, "");
+        }
     }
 }
