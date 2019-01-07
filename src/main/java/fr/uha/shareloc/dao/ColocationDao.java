@@ -24,4 +24,11 @@ public class ColocationDao extends BaseDao {
         create(new Account(user, colocation, 0));
         return true;
     }
+
+    public boolean createColocation(String adminLogin, String name) {
+        final User admin = find(adminLogin, User.class);
+        if (admin == null) return false;
+        create(new Colocation(name, admin));
+        return true;
+    }
 }

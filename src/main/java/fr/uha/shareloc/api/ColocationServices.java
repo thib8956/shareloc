@@ -4,6 +4,7 @@ import fr.uha.shareloc.dao.ColocationDao;
 import fr.uha.shareloc.dao.DaoFactory;
 import fr.uha.shareloc.model.Colocation;
 import fr.uha.shareloc.model.Service;
+import fr.uha.shareloc.model.User;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -36,6 +37,18 @@ public class ColocationServices extends BaseServices<Colocation> {
         if (c == null || s == null) return Response.status(Response.Status.NOT_FOUND).build();
         c.addService(s);
         getDao().update(c);
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("create")
+    public Response create(@FormParam("name") String name, @FormParam("admin") String adminLogin) {
+        final ColocationDao dao = (ColocationDao) getDao();
+        if (!dao.createColocation(adminLogin, name)) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(adminLogin)
+                    .build();
+        }
         return Response.ok().build();
     }
 
