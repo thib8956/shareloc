@@ -1,11 +1,12 @@
 package fr.uha.shareloc.controllers;
 
 import fr.uha.shareloc.dao.BaseDao;
+import fr.uha.shareloc.dao.DaoFactory;
 import fr.uha.shareloc.model.User;
 
 public class UserManager {
 
-    private static BaseDao dao = new BaseDao();
+    private static BaseDao dao = DaoFactory.createBaseDao();
 
     public static User getUser(String login) {
         if (login == null) return null;

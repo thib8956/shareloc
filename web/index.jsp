@@ -1,16 +1,14 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: thibaud
-  Date: 04/12/18
-  Time: 10:03
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
   <head>
     <title>$Title$</title>
   </head>
   <body>
-  $END$
+  <ul>
+    <li><a href="signup.jsp">Create a new user</a></li>
+    <li><a href="api/users">View users</a></li>
+
+  </ul>
+
   </body>
 </html>
