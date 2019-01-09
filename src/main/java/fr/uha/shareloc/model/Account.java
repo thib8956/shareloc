@@ -8,13 +8,13 @@ import java.io.Serializable;
 public class Account implements Serializable {
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
 
     @OneToOne
     private User user;
     @OneToOne
     private Colocation coloc;
-    private int points;
+    private Integer points;
 
     public Account(User user, Colocation colocation, int points) {
         this.user = user;
@@ -33,7 +33,7 @@ public class Account implements Serializable {
         return coloc;
     }
 
-    public int getPoints() {
+    public Integer getPoints() {
         return points;
     }
 
@@ -49,15 +49,7 @@ public class Account implements Serializable {
         this.points = points;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
-    }
-
-    public void addPoints(int amount) {
-        points += amount;
-    }
-
-    public void removePoints(int amounts) {
-        points -= amounts;
     }
 }

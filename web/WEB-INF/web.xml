@@ -12,29 +12,8 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    
-    <servlet>
-        <servlet-name>myjsp</servlet-name>
-        <jsp-file>/index.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>signup</servlet-name>
-        <jsp-file>/signup.jsp</jsp-file>
-    </servlet>
-
     <servlet-mapping>
         <servlet-name>Jersey Web Application</servlet-name>
-        <url-pattern>/api/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>myjsp</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>signup</servlet-name>
-        <url-pattern>/signup</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
 </web-app>
