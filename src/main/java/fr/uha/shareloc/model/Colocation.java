@@ -14,14 +14,6 @@ public class Colocation implements Serializable {
     @OneToOne private User admin;
     @OneToMany private List<Service> services;
 
-    public Colocation() {
-    }
-
-    public Colocation(String name, User admin) {
-        this.name = name;
-        this.admin = admin;
-    }
-
     public String getName() {
         return name;
     }

@@ -40,7 +40,7 @@ public class AuthenticationServices {
     @POST
     @Path("/signin")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response signin(@FormParam("login") String login, @FormParam("password") String password) {
+    public Response signin(@QueryParam("login") String login, @QueryParam("password") String password) {
         User u = UserManager.login(login, password);
 
         if (u != null)
@@ -52,8 +52,8 @@ public class AuthenticationServices {
     @POST
     @Path("/signup")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response signup(@FormParam("login") String login, @FormParam("password") String password,
-                           @FormParam("firstname") String firstname, @FormParam("lastname") String lastname) {
+    public Response signup(@QueryParam("login") String login, @QueryParam("password") String password,
+                           @QueryParam("firstname") String firstname, @QueryParam("lastname") String lastname) {
         if (UserManager.createUser(login, password, firstname, lastname))
             return Response.status(Status.CREATED).build();
         return Response.status(Status.CONFLICT).build();
